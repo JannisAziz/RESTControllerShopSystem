@@ -1,12 +1,10 @@
 package de.RepresentationalStateTransfer.controller;
 
-import de.RepresentationalStateTransfer.database.OrderRepo;
 import de.RepresentationalStateTransfer.model.Order;
 import de.RepresentationalStateTransfer.model.OrderWrapper;
 import de.RepresentationalStateTransfer.model.Product;
-import de.RepresentationalStateTransfer.database.ProductDatabase;
 
-import de.RepresentationalStateTransfer.service.ShopService;
+import de.RepresentationalStateTransfer.service.IShopService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -15,15 +13,11 @@ import java.util.*;
 @RequestMapping("shop")
 public class ShopController {
 
-    private final ProductDatabase productDatabase = new ProductDatabase(
-            Product.builder().id(1).name("Apple").build(),
-            Product.builder().id(2).name("Banana").build(),
-            Product.builder().id(3).name("Orange").build(),
-            Product.builder().id(4).name("Milk").build(),
-            Product.builder().id(5).name("Cereal").build()
-    );
+    private IShopService service;
 
-    private final ShopService shopService = new ShopService(productDatabase, new OrderRepo());
+    public ShopController(IShopService shopService){
+        this.service = shopService;
+    }
 
     /// PRODUCTS ///
 
@@ -31,29 +25,29 @@ public class ShopController {
 
     @GetMapping("products")
     public Collection<Product> getAllProducts(){
-        return shopService.getAllProducts();
+        return service.getAllProducts();
     }
 
     @GetMapping("products/id={id}")
     public Product getProductById(@PathVariable int id){
-        return shopService.getProductById(id);
+        return service.getProductById(id);
     }
 
     @GetMapping("products/name={name}")
     public Product getProductByName(@PathVariable String name){
-        return shopService.getProductByName(name);
+        return service.getProductByName(name);
     }
 
     // ADD & REMOVE
 
     @PutMapping("products")
     public String addProducts(@RequestBody Product... newProducts){
-        return shopService.addNewProducts(newProducts);
+        return service.addNewProducts(newProducts);
     }
 
     @DeleteMapping("products")
     public String removeProduct(@RequestBody Product... productsToRemove){
-        return shopService.removeProducts(productsToRemove);
+        return service.removeProducts(productsToRemove);
     }
 
     /// ORDERS ///
@@ -62,25 +56,25 @@ public class ShopController {
 
     @GetMapping("orders")
     public Collection<Order> getAllOrders(){
-        return shopService.getAllOrders();
+        return service.getAllOrders();
     }
 
     @GetMapping("orders/id={id}")
     public Order getOrderById(@PathVariable int id){
-        return shopService.getOrderById(id);
+        return service.getOrderById(id);
     }
 
     // ADD & REMOVE
 
     @PutMapping("orders")
     public String createOrder(@RequestBody OrderWrapper newOrder) {
-        return shopService.createNewOrder(
+        return service.createNewOrder(
                 newOrder.orderId, newOrder.productsToOrder
         );
     }
 
     @DeleteMapping("orders")
-    public String removeOrder(@RequestBody int... orderIdsToRemove){
-        return shopService.removeOrders(orderIdsToRemove);
+    public String removeOrders(@RequestBody int... orderIdsToRemove){
+        return service.removeOrders(orderIdsToRemove);
     }
 }
