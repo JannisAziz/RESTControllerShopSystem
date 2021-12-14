@@ -19,6 +19,8 @@ class ShopControllerTest {
             new Product(3, "Kellogs")
     );
 
+    final Product mockInvalidProduct = new Product(0, "INVALID_PRODUCT");
+
     final Order mockOrder = Order.builder()
             .orderId(1)
             .orderProducts(mockProducts)
