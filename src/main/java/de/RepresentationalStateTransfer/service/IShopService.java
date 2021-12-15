@@ -29,6 +29,6 @@ public interface IShopService {
     void printAllOrders();
 
     // ADD & REMOVE
-    String createNewOrder(int orderId, Collection<Product> productsToOrder);
+    String addOrders(Order... orders);
     String removeOrders(int... orderIdsToRemove);
 }
