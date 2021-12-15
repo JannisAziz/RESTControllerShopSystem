@@ -1,7 +1,6 @@
 package de.RepresentationalStateTransfer.database;
 
 import de.RepresentationalStateTransfer.model.Product;
-import org.springframework.stereotype.Service;
 
 import javax.naming.InvalidNameException;
 import java.security.InvalidKeyException;

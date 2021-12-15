@@ -10,15 +10,13 @@ import javax.naming.InvalidNameException;
 import java.security.InvalidKeyException;
 import java.util.Collection;
 
-
 // Note: This is practically an interface for a 'front end(?)', as well as an error catching layer!
 @Service
 public class ShopService implements IShopService{
 
     private final ProductDatabase productDatabase = new ProductDatabase(
-            new Product(1, "Apple"),
-            new Product(2, "Banana"),
-            new Product(3, "Orange")
+            new Product(1, "PRODUCT_FROM_DB_1"),
+            new Product(2, "PRODUCT_FROM_DB_2")
     );
 
     private final OrderRepo orderRepo = new OrderRepo();
@@ -63,7 +61,7 @@ public class ShopService implements IShopService{
             return "Added products!";
         } catch (InvalidKeyException e) {
             e.printStackTrace();
-            return "InvalidKeyException! Does the Product already exist?";
+            return "InvalidKeyException! Product already exists.";
         }
     }
 
@@ -73,7 +71,7 @@ public class ShopService implements IShopService{
             return "Removed products!";
         } catch (InvalidKeyException e) {
             e.printStackTrace();
-            return "InvalidKeyException! Does the Product even exist?";
+            return "InvalidKeyException! Product doesn't exist.";
         }
     }
 
@@ -102,23 +100,23 @@ public class ShopService implements IShopService{
 
     // ADD & REMOVE
 
-    public String createNewOrder(int orderId, Collection<Product> productsToOrder) {
+    public String addOrders(Order... orders) {
         try {
-            orderRepo.createNewOrder(orderId, productsToOrder);
-            return "Created order!";
+            orderRepo.addOrders(orders);
+            return "Added orders!";
         } catch (InvalidKeyException e) {
             e.printStackTrace();
-            return "InvalidKeyException! Does the Order already exist?";
+            return "InvalidKeyException! Order ID already exists.";
         }
     }
 
     public String removeOrders(int... orderIdsToRemove) {
         try {
             orderRepo.removeOrders(orderIdsToRemove);
-            return "Removed order!";
+            return "Removed orders!";
         } catch (InvalidKeyException e) {
             e.printStackTrace();
-            return "InvalidKeyException! Does the Order even exist?";
+            return "InvalidKeyException! Order ID doesn't exists.";
         }
     }
 }

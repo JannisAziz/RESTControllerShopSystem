@@ -1,9 +1,6 @@
 package de.RepresentationalStateTransfer.controller;
 
-import de.RepresentationalStateTransfer.model.Order;
-import de.RepresentationalStateTransfer.model.OrderWrapper;
-import de.RepresentationalStateTransfer.model.Product;
-
+import de.RepresentationalStateTransfer.model.*;
 import de.RepresentationalStateTransfer.service.IShopService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +8,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("shop")
-public class ShopController {
+public class ShopController  {
 
     private IShopService service;
 
@@ -46,8 +43,8 @@ public class ShopController {
     }
 
     @DeleteMapping("products")
-    public String removeProduct(@RequestBody Product... productsToRemove){
-        return service.removeProducts(productsToRemove);
+    public String removeProducts(@RequestBody Product... productsToRemove){
+         return service.removeProducts(productsToRemove);
     }
 
     /// ORDERS ///
@@ -67,10 +64,8 @@ public class ShopController {
     // ADD & REMOVE
 
     @PutMapping("orders")
-    public String createOrder(@RequestBody OrderWrapper newOrder) {
-        return service.createNewOrder(
-                newOrder.orderId, newOrder.productsToOrder
-        );
+    public String addOrders(@RequestBody Order... orders) {
+        return service.addOrders(orders);
     }
 
     @DeleteMapping("orders")
