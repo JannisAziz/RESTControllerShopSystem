@@ -1,7 +1,6 @@
 package de.RepresentationalStateTransfer.database;
 
 import de.RepresentationalStateTransfer.model.Order;
-import de.RepresentationalStateTransfer.model.Product;
 
 import java.security.InvalidKeyException;
 import java.util.*;
@@ -10,19 +9,9 @@ public class OrderRepo {
 
     private final Map<Integer, Order> orderMap = new HashMap<>();
 
-    public static Order INVALID_ORDER = Order.builder().orderId(0).orderProducts(new ArrayList<>()).build();
-
-    public OrderRepo(Order... initialOrders){
-        for (Order newOrder : initialOrders){
-            orderMap.put(newOrder.getOrderId(), newOrder);
-        }
-    }
-
     // GET
 
-    public Collection<Order> getAllOrders() {
-        return orderMap.values();
-    }
+    public Collection<Order> getAllOrders() {return orderMap.values();}
 
     public Order getOrderById(int id) throws InvalidKeyException {
         if (orderMap.containsKey(id)) {
@@ -41,18 +30,16 @@ public class OrderRepo {
     }
 
     // ADD
-    public void createNewOrder(int id, Collection<Product> productsToOrder) throws InvalidKeyException {
-        if (!orderMap.containsKey(id)) {
-            Order newOrder = Order.builder()
-                    .orderId(id)
-                    .orderProducts(productsToOrder)
-                    .build();
 
-            orderMap.put(id, newOrder);
-        }
-        else{
+    public void addOrders(Order... ordersToAdd) throws InvalidKeyException {
+        for (Order orderToAdd : ordersToAdd ) addOrder(orderToAdd);
+    }
+
+    private void addOrder(Order orderToAdd) throws InvalidKeyException {
+        if (!orderMap.containsKey(orderToAdd.getOrderId()))
+            orderMap.put(orderToAdd.getOrderId(), orderToAdd);
+        else
             throw new InvalidKeyException();
-        }
     }
 
     // REMOVE
