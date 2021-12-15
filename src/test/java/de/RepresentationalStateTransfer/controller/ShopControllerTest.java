@@ -1,11 +1,10 @@
 package de.RepresentationalStateTransfer.controller;
 
-import de.RepresentationalStateTransfer.model.Order;
-import de.RepresentationalStateTransfer.model.OrderWrapper;
-import de.RepresentationalStateTransfer.model.Product;
+import de.RepresentationalStateTransfer.model.*;
 import de.RepresentationalStateTransfer.service.IShopService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Or;
 
 import java.util.*;
 
@@ -13,18 +12,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ShopControllerTest {
 
-    final List<Product> mockProducts = Arrays.asList(
-            new Product(1, "Milch"),
-            new Product(2, "Cola"),
-            new Product(3, "Kellogs")
+    private final static List<Product> mockProducts = Arrays.asList(
+            new Product(1, "TESTPRODUCT_1"),
+            new Product(2, "TESTPRODUCT_2"),
+            new Product(3, "TESTPRODUCT_3")
     );
 
     final Product mockInvalidProduct = new Product(0, "INVALID_PRODUCT");
 
-    final Order mockOrder = Order.builder()
-            .orderId(1)
-            .orderProducts(mockProducts)
-            .build();
+    final List<Order> mockOrders = Arrays.asList(
+            new Order(1, mockProducts),
+            new Order(2, mockProducts)
+    );
 
     /// PRODUCTS ///
 
@@ -61,10 +60,10 @@ class ShopControllerTest {
         ShopController shopController = new ShopController(mockService);
 
         // WHEN
-        Mockito.when(mockService.getProductByName("Milk")).thenReturn(mockProducts.get(0));
+        Mockito.when(mockService.getProductByName("TESTPRODUCT_1")).thenReturn(mockProducts.get(0));
 
         // THEN
-        assertEquals(mockProducts.get(0), shopController.getProductByName("Milk"));
+        assertEquals(mockProducts.get(0), shopController.getProductByName("TESTPRODUCT_1"));
     }
 
     @Test
@@ -90,7 +89,7 @@ class ShopControllerTest {
         Mockito.when(mockService.removeProducts(mockProducts.get(0))).thenReturn("Removed products!");
 
         // THEN
-        assertEquals("Removed products!", shopController.removeProduct(mockProducts.get(0)));
+        assertEquals("Removed products!", shopController.removeProducts(mockProducts.get(0)));
     }
 
     /// ORDERS ///
@@ -102,10 +101,10 @@ class ShopControllerTest {
         ShopController shopController = new ShopController(mockService);
 
         // WHEN
-        Mockito.when(mockService.getAllOrders()).thenReturn(Arrays.asList(mockOrder));
+        Mockito.when(mockService.getAllOrders()).thenReturn(mockOrders);
 
         // THEN
-        assertEquals(Arrays.asList(mockOrder), shopController.getAllOrders());
+        assertEquals(mockOrders, shopController.getAllOrders());
     }
 
     @Test
@@ -115,10 +114,10 @@ class ShopControllerTest {
         ShopController shopController = new ShopController(mockService);
 
         // WHEN
-        Mockito.when(mockService.getOrderById(1)).thenReturn(mockOrder);
+        Mockito.when(mockService.getOrderById(1)).thenReturn(mockOrders.get(0));
 
         // THEN
-        assertEquals(mockOrder, shopController.getOrderById(1));
+        assertEquals(mockOrders.get(0), shopController.getOrderById(1));
     }
 
     @Test
@@ -128,11 +127,11 @@ class ShopControllerTest {
         ShopController shopController = new ShopController(mockService);
 
         // WHEN
-        OrderWrapper mockOrderWrapper = new OrderWrapper(1, mockProducts);
-        Mockito.when(mockService.createNewOrder(1, mockProducts)).thenReturn("Created order!");
+        Order mockOrder = new Order(1, mockProducts);
+        Mockito.when(mockService.addOrders(mockOrder)).thenReturn("Created order!");
 
         // THEN
-        assertEquals("Created order!", shopController.createOrder(mockOrderWrapper));
+        assertEquals("Created order!", shopController.addOrders(mockOrder));
     }
 
     @Test
