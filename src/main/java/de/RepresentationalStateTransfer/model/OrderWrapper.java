@@ -6,8 +6,12 @@ import lombok.Data;
 import java.util.Collection;
 
 @Data
-@Builder
 public class OrderWrapper{
     public int orderId;
     public Collection<Product> productsToOrder;
+
+    public OrderWrapper(int id, Collection<Product> productsToOrder){
+        this.orderId = id;
+        this.productsToOrder = productsToOrder;
+    }
 }

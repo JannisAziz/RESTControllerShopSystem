@@ -1,6 +1,7 @@
 package de.RepresentationalStateTransfer.database;
 
 import de.RepresentationalStateTransfer.model.Product;
+import org.springframework.stereotype.Service;
 
 import javax.naming.InvalidNameException;
 import java.security.InvalidKeyException;
@@ -10,7 +11,7 @@ public class ProductDatabase {
 
     private final SortedMap<Integer, Product> productsMap = new TreeMap<>();
 
-    public static Product INVALID_PRODUCT = Product.builder().id(0).name("INVALID_PRODUCT").build();
+    public static Product INVALID_PRODUCT = new Product(0, "INVALID_PRODUCT");
 
     public ProductDatabase(Product... initialProducts) {
         for (Product product : initialProducts) {

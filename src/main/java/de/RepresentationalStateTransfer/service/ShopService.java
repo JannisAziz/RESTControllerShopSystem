@@ -4,6 +4,7 @@ import de.RepresentationalStateTransfer.model.Order;
 import de.RepresentationalStateTransfer.database.OrderRepo;
 import de.RepresentationalStateTransfer.model.Product;
 import de.RepresentationalStateTransfer.database.ProductDatabase;
+import org.springframework.stereotype.Service;
 
 import javax.naming.InvalidNameException;
 import java.security.InvalidKeyException;
@@ -11,15 +12,16 @@ import java.util.Collection;
 
 
 // Note: This is practically an interface for a 'front end(?)', as well as an error catching layer!
-public class ShopService {
+@Service
+public class ShopService implements IShopService{
 
-    private final ProductDatabase productDatabase;
-    private final OrderRepo orderRepo;
+    private final ProductDatabase productDatabase = new ProductDatabase(
+            new Product(1, "Apple"),
+            new Product(2, "Banana"),
+            new Product(3, "Orange")
+    );
 
-    public ShopService(ProductDatabase productDB, OrderRepo orderRepo) {
-        this.productDatabase = productDB;
-        this.orderRepo = orderRepo;
-    }
+    private final OrderRepo orderRepo = new OrderRepo();
 
     /// PRODUCTS ///
 
@@ -36,7 +38,7 @@ public class ShopService {
             e.printStackTrace();
         }
 
-        return productDatabase.INVALID_PRODUCT;
+        return ProductDatabase.INVALID_PRODUCT;
     }
 
     public Product getProductByName(String name) {
@@ -46,7 +48,7 @@ public class ShopService {
             e.printStackTrace();
         }
 
-        return productDatabase.INVALID_PRODUCT;
+        return ProductDatabase.INVALID_PRODUCT;
     }
 
     public void printAllProductsToConsole(){
