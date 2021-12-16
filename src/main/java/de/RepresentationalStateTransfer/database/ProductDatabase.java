@@ -14,7 +14,7 @@ public class ProductDatabase {
 
     public ProductDatabase(Product... initialProducts) {
         for (Product product : initialProducts) {
-            productsMap.put(product.getId(), product);
+            productsMap.put(product.id(), product);
         }
     }
 
@@ -35,7 +35,7 @@ public class ProductDatabase {
 
     public Product getProductByName(String name) throws InvalidNameException {
         for (Product product : productsMap.values()){
-            if (product.getName().equalsIgnoreCase(name)){ // ignore case to allow for better search
+            if (product.name().equalsIgnoreCase(name)){ // ignore case to allow for better search
                 return product;
             }
         }
@@ -57,8 +57,8 @@ public class ProductDatabase {
     }
 
     private void addProduct(Product newProduct) throws InvalidKeyException {
-        if (!productsMap.containsKey(newProduct.getId()))
-            productsMap.put(newProduct.getId(), newProduct);
+        if (!productsMap.containsKey(newProduct.id()))
+            productsMap.put(newProduct.id(), newProduct);
         else
             throw new InvalidKeyException();
     }
@@ -71,8 +71,8 @@ public class ProductDatabase {
     }
 
     private void removeProduct(Product productToRemove) throws InvalidKeyException {
-        if (productsMap.containsKey(productToRemove.getId()))
-            productsMap.remove(productToRemove.getId());
+        if (productsMap.containsKey(productToRemove.id()))
+            productsMap.remove(productToRemove.id());
         else
             throw new InvalidKeyException();
     }
